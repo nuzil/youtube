@@ -1,0 +1,49 @@
+{
+  "meshConfig": {
+    "sources": [
+      {
+        "name": "REST",
+        "handler": {
+          "openapi": {
+            "source": "https://venia.magento.com/rest/schema?services=storeStoreRepositoryV1,storeGroupRepositoryV1,storeWebsiteRepositoryV1",
+            "schemaHeaders": {
+              "Authorization": "Bearer {context.headers['Authorization']}"
+            },
+            "operationHeaders": {
+              "Authorization": "Bearer {context.headers['Authorization']}",
+              "Content-Type": "application/json"
+            },
+            "includeHttpDetails": true
+          }
+        }
+      },
+      {
+        "name": "GraphQL",
+        "handler": {
+          "graphql": {
+            "endpoint": "https://venia.magento.com/graphql",
+            "operationHeaders": {
+              "store": "{context.headers['store']}",
+              "Authorization": "{context.headers['Authorization']}"
+            }
+          }
+        }
+      }
+    ],
+    "responseConfig": {
+      "headers": {
+        "Cache-Control": "max-age=60480",
+        "Vary": "Accept"
+      },
+      "CORS": {
+        "origin": "*",
+        "methods": [
+          "GET",
+          "POST",
+          "OPTIONS"
+        ]
+      }
+    }
+  }
+}
+
