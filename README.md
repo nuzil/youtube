@@ -1,4 +1,4 @@
-# My Passion
+# Sample data for Commerce Tech channel on Youtube
 
 In this repository I will share code snippets and other stuff from my Youtube channel videos.
 
