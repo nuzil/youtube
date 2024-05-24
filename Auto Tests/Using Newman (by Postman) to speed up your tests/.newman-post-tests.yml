@@ -1,0 +1,12 @@
+'GraphQL Newman Tests.':
+  image:
+    name: postman/newman_alpine33
+    entrypoint: [""]
+  stage: post-deploy
+  environment:
+    name: $CI_COMMIT_BRANCH
+  rules:
+    - if: '$STOP_POST_DEPLOY != "true" && $CI_PIPELINE_SOURCE != "merge_request_event"'
+  script:
+    - if [ -f ".gitlab/newman_tests/input/environment_$CI_COMMIT_BRANCH.json" ]; then newman run .gitlab/newman_tests/input/collection.json -e .gitlab/newman_tests/input/environment_$CI_COMMIT_BRANCH.json; fi
+
