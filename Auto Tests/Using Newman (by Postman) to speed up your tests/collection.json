@@ -1,0 +1,871 @@
+{
+	"info": {
+		"name": "Auto Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+	},
+	"item": [
+		{
+			"name": "Store",
+			"item": [
+				{
+					"name": "Country",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log('# Get Country');",
+									"",
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"-> country response\", function () {",
+									"    pm.expect(response).not.undefined;",
+									"    if (response.errors) {",
+									"        pm.expect(response.errors).not.undefined;",
+									"        pm.expect(response.errors).not.empty;",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.country).is.null;",
+									"    }",
+									"    if (!response.errors) {",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.country).not.undefined;",
+									"        pm.expect(response.data.country.id).not.undefined;",
+									"        pm.expect(response.data.country.available_regions).not.null;",
+									"        pm.expect(response.data.country.available_regions).to.be.an('array')",
+									"    }",
+									"});",
+									"",
+									"if (response.data.country.available_regions) {",
+									"    var shuffled = response.data.country.available_regions",
+									"        .map(value => ({ value, sort: Math.random() }))",
+									"        .sort((a, b) => a.sort - b.sort)",
+									"        .map(({ value }) => value);",
+									"    pm.environment.set(\"regionId\", shuffled[0].id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Store",
+								"value": "{{storeCode}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n    country(id: \"{{countryCode}}\") {\n        id\n        two_letter_abbreviation\n        three_letter_abbreviation\n        full_name_locale\n        full_name_english\n        available_regions {\n            id\n            code\n            name\n        }\n    }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{host}}/graphql?api_key={{apiKey}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"graphql"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Countries",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log('# Get Countries');",
+									"",
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"-> countries response\", function () {",
+									"    pm.expect(response).not.undefined;",
+									"    if (response.errors) {",
+									"        pm.expect(response.errors).not.undefined;",
+									"        pm.expect(response.errors).not.empty;",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.countries).is.null;",
+									"    }",
+									"    if (!response.errors) {",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.countries).not.undefined;",
+									"        pm.expect(response.data.countries[0].id).not.undefined;",
+									"        pm.expect(response.data.countries[0].available_regions).not.null;",
+									"        pm.expect(response.data.countries[0].available_regions).to.be.an('array')",
+									"    }",
+									"});",
+									"",
+									"if (response.data.countries.available_regions) {",
+									"    var shuffled = response.data.countries.available_regions",
+									"        .map(value => ({ value, sort: Math.random() }))",
+									"        .sort((a, b) => a.sort - b.sort)",
+									"        .map(({ value }) => value);",
+									"    pm.environment.set(\"regionId\", shuffled[0].id);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Store",
+								"value": "{{storeCode}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJraWQiOiIxIiwiYWxnIjoiSFMyNTYifQ.eyJ1aWQiOjE2MSwidXR5cGlkIjozLCJ1Y29tcGlkIjpbNTNdLCJpYXQiOjE3MTAyNTMyNTAsImV4cCI6MTcxMDI1Njg1MH0.13ksI1I9AatWp6yTZNsIr3FwT2D0xu2yraSRK3ZOtFI"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n    countries {\n        id\n        two_letter_abbreviation\n        three_letter_abbreviation\n        full_name_locale\n        full_name_english\n        available_regions {\n            id\n            code\n            name\n        }\n    }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{host}}/graphql?api_key={{apiKey}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"graphql"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "StoreConfig",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log('# Get StoreConfig');",
+									"",
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"-> store config response\", function () {",
+									"    pm.expect(response).not.undefined;",
+									"    if (response.errors) {",
+									"        pm.expect(response.errors).not.undefined;",
+									"        pm.expect(response.errors).not.empty;",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.country).is.null;",
+									"    }",
+									"    if (!response.errors) {",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.storeConfig).not.undefined;",
+									"        pm.expect(response.data.storeConfig.default_company_colours).not.undefined;",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Store",
+								"value": "{{storeCode}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  storeConfig {\n    store_code\n    store_name\n    is_default_store\n    store_group_code\n    is_default_store_group\n    locale\n    base_currency_code\n    default_display_currency_code\n    timezone\n    weight_unit\n    base_url\n    base_link_url\n    base_static_url\n    base_media_url\n    secure_base_url\n    secure_base_link_url\n    secure_base_static_url\n    secure_base_media_url\n    default_company_colours\n    company_referral_methods {\n        value\n        label\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{host}}/graphql?api_key={{apiKey}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"graphql"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "0. Create Customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log('# Create Customer');",
+									"",
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"-> createCustomer success and email matches\", function () {",
+									"    pm.expect(response).not.undefined;",
+									"    if (response.errors) {",
+									"        pm.expect(response.errors).not.undefined;",
+									"        pm.expect(response.errors).not.empty;",
+									"        pm.expect(response.data).not.undefined;",
+									"    }",
+									"    if (!response.errors) {",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.createCustomerV2).not.undefined;",
+									"        pm.expect(response.data.createCustomerV2.customer).not.undefined;",
+									"        pm.expect(response.data.createCustomerV2.customer.email).equal(pm.variables.get('customerRegisterEmail'));",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function customerEmail(minValue, maxValue, dataSet = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ') {",
+									"    if (!minValue) {",
+									"        minValue = 20;",
+									"        maxValue = 20;",
+									"    }",
+									"",
+									"    if (!maxValue) {",
+									"        maxValue = minValue;",
+									"    }",
+									"",
+									"    let length = require('lodash').random(minValue, maxValue),",
+									"        randomString = \"\";",
+									"",
+									"    for (let i = 0; i < length; i++)",
+									"        randomString += dataSet.charAt(Math.floor(Math.random() * dataSet.length));",
+									"    return randomString;",
+									"}",
+									"",
+									"pm.variables.set('customerRegisterEmail', 'customer'+customerEmail()+'@mailinator.com');"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Store",
+								"value": "{{storeCode}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  createCustomerV2(\n    input: {\n      firstname: \"Text\"\n      lastname: \"Customer\"\n      email: \"{{customerRegisterEmail}}\"\n      password: \"Test!\"\n      allow_remote_shopping_assistance: true\n      language: \"DE\"\n      telephone: \"0049173444333\"\n\n    }\n  ) {\n    customer {\n      firstname\n      lastname\n      email\n      allow_remote_shopping_assistance\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{host}}/graphql?api_key={{apiKey}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"graphql"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1. Generate Customer Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log('# Customer login');",
+									"",
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"-> generateCustomerToken response\", function () {",
+									"    pm.expect(response).not.undefined;",
+									"    if (response.errors) {",
+									"        pm.expect(response.errors).not.undefined;",
+									"        pm.expect(response.errors).not.empty;",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.generateCustomerToken).is.null;",
+									"    }",
+									"    if (!response.errors) {",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.generateCustomerToken).not.undefined;",
+									"        pm.expect(response.data.generateCustomerToken.token).not.undefined;",
+									"        pm.expect(response.data.generateCustomerToken.token).not.null;",
+									"    }",
+									"});",
+									"",
+									"console.log(pm.request)",
+									"",
+									"console.log(response)",
+									"if (response.data.generateCustomerToken.token) {",
+									"    pm.environment.set(\"graphqlToken\", response.data.generateCustomerToken.token);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Store",
+								"value": "{{storeCode}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation($email: String!, $password: String!) {\n  generateCustomerToken(\n    email: $email\n    password: $password\n  ) {\n    token\n  }\n}",
+								"variables": "{\n    \"email\": \"{{customerEmail}}\",\n    \"password\": \"{{customerPassword}}\"\n}"
+							}
+						},
+						"url": {
+							"raw": "{{host}}/graphql?api_key={{apiKey}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"graphql"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Get Company (Better use Get Customer)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log('# Get Company');",
+									"",
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"-> company response\", function () {",
+									"    pm.expect(response).not.undefined;",
+									"    if (response.errors) {",
+									"        pm.expect(response.errors).not.undefined;",
+									"        pm.expect(response.errors).not.empty;",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.generateCustomerToken).is.null;",
+									"    }",
+									"    if (!response.errors) {",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.company).not.undefined;",
+									"        pm.expect(response.data.company.email).not.undefined;",
+									"        pm.expect(response.data.company.email).not.null;",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Store",
+								"value": "{{storeCode}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{graphqlToken}}"
+							},
+							{
+								"key": "company",
+								"value": "{{companyId}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\n  company{\n    company_admin {\n      firstname\n      lastname\n      email\n    }\n    email\n    id\n    legal_address {\n      street\n       city\n      region {\n        region_id\n        region_code\n      }\n      postcode\n      country_code\n      telephone\n    }\n    legal_name\n    name\n    colors\n    logo\n    voucher_budget\n    form_fields {\n        attribute_code\n        attribute_label\n        error_message\n        regexp_validation\n        is_required\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{host}}/graphql?api_key={{apiKey}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"graphql"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Get Customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log('# Get Customer');",
+									"",
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"-> customer response\", function () {",
+									"    pm.expect(response).not.undefined;",
+									"    if (response.errors) {",
+									"        pm.expect(response.errors).not.undefined;",
+									"        pm.expect(response.errors).not.empty;",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.generateCustomerToken).is.null;",
+									"    }",
+									"    if (!response.errors) {",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.customer).not.undefined;",
+									"        pm.expect(response.data.customer.email).not.undefined;",
+									"        pm.expect(response.data.customer.email).not.null;",
+									"    }",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Store",
+								"value": "{{storeCode}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{graphqlToken}}"
+							},
+							{
+								"key": "company",
+								"value": "{{companyId}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "{\n  customer {\n    id\n    firstname\n    lastname\n    suffix\n    email\n    mobile\n    position\n    job_title\n    telephone\n    language\n    is_validation_required\n    status\n    addresses {\n      id\n      firstname\n      lastname\n      street\n      city\n      region {\n        region_code\n        region\n      }\n      postcode\n      country_code\n      telephone\n    }\n\n    companies {\n        id\n        name\n        role_id\n        role\n        is_default\n    }\n\n    company{\n        company_admin {\n            firstname\n            lastname\n            email\n        }\n        email\n        id\n        legal_address {\n        street\n        city\n        region {\n            region_id\n            region_code\n        }\n        postcode\n        country_code\n        telephone\n        }\n        legal_name\n        name\n        colors\n        logo\n        voucher_budget\n        form_fields {\n            attribute_code\n            attribute_label\n            error_message\n            regexp_validation\n            is_required\n        }\n    }\n    role {\n        id\n        name\n        permissions {\n            text\n            id\n            children {\n                text\n                id\n                children {\n                    text\n                    id\n                }\n            }\n        }\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{host}}/graphql?api_key={{apiKey}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"graphql"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.1. Get Customer Addresses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log('# Get Customer Addresses');",
+									"",
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"-> customer addresses response\", function () {",
+									"    pm.expect(response).not.undefined;",
+									"    if (response.errors) {",
+									"        pm.expect(response.errors).not.undefined;",
+									"        pm.expect(response.errors).not.empty;",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.generateCustomerToken).is.null;",
+									"    }",
+									"    if (!response.errors) {",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.customer).not.undefined;",
+									"        pm.expect(response.data.customer.email).not.undefined;",
+									"        pm.expect(response.data.customer.email).not.null;",
+									"        pm.expect(response.data.customer.addresses).not.undefined;",
+									"    }",
+									"});",
+									"",
+									"if (response.data.customer.addresses) {",
+									"    var shuffled = response.data.customer.addresses",
+									"        .map(value => ({ value, sort: Math.random() }))",
+									"        .sort((a, b) => a.sort - b.sort)",
+									"        .map(({ value }) => value);",
+									"    pm.environment.set(\"customerBillingAddressId\", shuffled[0].id);",
+									"    shuffled = response.data.customer.addresses",
+									"        .map(value => ({ value, sort: Math.random() }))",
+									"        .sort((a, b) => a.sort - b.sort)",
+									"        .map(({ value }) => value);",
+									"    if (shuffled[1]) {",
+									"        pm.environment.set(\"customerShippingAddressId\", shuffled[1].id);",
+									"    } else {",
+									"        pm.environment.set(\"customerShippingAddressId\", shuffled[0].id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Store",
+								"value": "{{storeCode}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{graphqlToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "{\n  customer {\n    firstname\n    lastname\n    suffix\n    email\n    addresses {\n      id\n      firstname\n      lastname\n      street\n      city\n      region {\n        region_code\n        region\n      }\n      postcode\n      country_code\n      telephone\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{host}}/graphql?api_key={{apiKey}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"graphql"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Update Customer Language",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log('# Update Company Language');",
+									"",
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"-> company language update response\", function () {",
+									"    pm.expect(response).not.undefined;",
+									"    if (response.errors) {",
+									"        pm.expect(response.errors).not.undefined;",
+									"        pm.expect(response.errors).not.empty;",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.updateCustomerV2).is.null;",
+									"    }",
+									"    if (!response.errors) {",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.updateCustomerV2).not.undefined;",
+									"        pm.expect(response.data.updateCustomerV2.customer).not.undefined;",
+									"        pm.expect(response.data.updateCustomerV2.customer.language).not.null;",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Store",
+								"value": "{{storeCode}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{graphqlToken}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  updateCustomerV2(\n    input: {\n      language: \"en\"\n    }\n  ) {\n    customer {\n      firstname\n      lastname\n      email\n      language\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{host}}/graphql?api_key={{apiKey}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"graphql"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Get Products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log('# Get Products');",
+									"",
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"-> placeOrder response\", function () {",
+									"    pm.expect(response).not.undefined;",
+									"    if (response.errors) {",
+									"        pm.expect(response.errors).not.undefined;",
+									"        pm.expect(response.errors).not.empty;",
+									"    }",
+									"    if (!response.errors) {",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.products).not.undefined;",
+									"        pm.expect(response.data.products.items).not.undefined;",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{graphqlToken}}"
+							},
+							{
+								"key": "Store",
+								"value": "{{storeCode}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query{\n  products(\n    filter: {}\n  ) {\n    total_count\n    items {\n      sku\n      url_key\n      type_id\n      ... on CustomizableProductInterface {\n        options {\n          title\n          required\n          sort_order\n          uid\n        }\n      }\n      categories {\n        name\n        url_key\n      }\n    }\n    page_info {\n      page_size\n      current_page\n    }\n    company {\n        email\n        colors\n        logo\n        voucher_budget\n        form_fields {\n            attribute_code\n            attribute_label\n            error_message\n            regexp_validation\n            is_required\n        }\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{host}}/graphql?api_key={{apiKey}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"graphql"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Attributes",
+			"item": [
+				{
+					"name": "Get Attributes Metadata",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log('# Get Attributes');",
+									"",
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"-> get Attributes response\", function () {",
+									"    pm.expect(response).not.undefined;",
+									"    if (response.errors) {",
+									"        pm.expect(response.errors).not.undefined;",
+									"        pm.expect(response.errors).not.empty;",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.customAttributeMetadata).is.null;",
+									"    }",
+									"    if (!response.errors) {",
+									"        pm.expect(response.data).not.undefined;",
+									"        pm.expect(response.data.customAttributeMetadata).not.undefined;",
+									"        pm.expect(response.data.customAttributeMetadata.items).not.undefined;",
+									"    }",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Store",
+								"value": "{{storeCode}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{graphqlToken}}"
+							},
+							{
+								"key": "company",
+								"value": "{{companyId}}"
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "{\n  customAttributeMetadata(\n    attributes: [\n      {\n        attribute_code: \"gender\"\n        entity_type: \"customer\"\n      }\n    ]\n  ) {\n    items {\n      attribute_code\n      attribute_type\n      entity_type\n      input_type\n      attribute_options {\n       value\n       label\n     }\n      storefront_properties {\n        use_in_product_listing\n        use_in_layered_navigation\n        use_in_search_results_layered_navigation\n        visible_on_catalog_pages\n        position\n      }\n    }\n  }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{host}}/graphql?api_key={{apiKey}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"graphql"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKey}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
