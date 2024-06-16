@@ -1,0 +1,27 @@
+{
+  "meshConfig": {
+    "sources": [
+      {
+        "name": "MagentoGraphQL",
+        "handler": {
+          "graphql": {
+            "endpoint": "https://venia.magento.com/graphql",
+            "operationHeaders": {
+              "store": "{context.headers['store']}",
+              "Authorization": "{context.headers['Authorization']}"
+            }
+          }
+        }
+      }
+    ],
+    "additionalResolvers": [
+      "./resolver.js"
+    ],
+    "files": [
+      {
+        "path": "./resolver.js",
+        "content": "module.exports = {\n    resolvers: {\n        SimpleProduct: {//should be done for each product type because it's doesn't work for interfaces for example ProductInterface\n            media_gallery: {\n                selectionSet: '{ media_gallery name sku }',//fields needed to resolver\n                resolve: (root) => {\n                    // if(root || args || context || info){\n                        // root = root    \n                        // Do not ignore root, args, context, or info. They may be needed for future enhancements.\n                    // }\n                    if (!root.external_images) {\n                        return []; // Return empty array if external_images is empty\n                    }\n\n                    const urls = root.external_images.split(',').map(url => url.trim());\n                    return urls.map((url, index) => ({\n                        __typename: 'ProductImage',\n                        position: index + 1,\n                        label: `${root.name}`, // Use SimpleProduct.name as label\n                        url,\n                        disabled: false\n                    }));\n                },\n            },\n        },\n    },\n};"
+      }
+    ]
+  }
+}
